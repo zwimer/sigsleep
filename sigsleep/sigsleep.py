@@ -25,14 +25,15 @@ def sigsleep(seconds: float, sig: signal.Signals) -> int:
     signal.signal(sig, lambda *_: _handler(seconds, start))
     try:
         time.sleep(seconds)
-        return 0
     except KeyboardInterrupt:
         return 130
+    return 0
 
 
 def cli() -> None:
     """
     CLI for sigsleep
+    Default signal is SIGINFO if it exists, else SIGUSR1
     """
     base: str = os.path.basename(sys.argv[0])
     parser = argparse.ArgumentParser(prog=base)
@@ -40,7 +41,9 @@ def cli() -> None:
     parser.add_argument("seconds", type=float, help="The number of seconds to sleep")
     to_signal = lambda d: signal.Signals(int(d))
     to_signal.__name__ = "signal"  # Cleaner output
-    parser.add_argument("--signal", type=to_signal, default=signal.SIGUSR1, help="The signal to intercept")
+    parser.add_argument("--signal", type=to_signal, help="The signal to intercept",
+        default=signal.SIGINFO if hasattr(signal, "SIGINFO") else signal.SIGUSR1
+    )
     ns = parser.parse_args(sys.argv[1:])
     sys.exit(sigsleep(ns.seconds, ns.signal))
 
