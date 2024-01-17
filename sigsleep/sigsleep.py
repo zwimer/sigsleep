@@ -1,4 +1,3 @@
-from __future__ import annotations
 import argparse
 import signal
 import time
@@ -12,7 +11,7 @@ def _handler(total: float, start: int, *_) -> None:
     """
     Bind total and start to make into a signal handler that prints elapsed time
     """
-    remain: int = round(total - (time.time_ns()-start)/1E9)
+    remain: int = round(total - (time.time_ns() - start) / 1e9)
     print(f"sleep: about {remain} seconds(s) left out of the original {total}")
 
 
@@ -41,8 +40,11 @@ def cli() -> None:
     parser.add_argument("seconds", type=float, help="The number of seconds to sleep")
     to_signal = lambda d: signal.Signals(int(d))
     to_signal.__name__ = "signal"  # Cleaner output
-    parser.add_argument("--signal", type=to_signal, help="The signal to intercept",
-        default=signal.SIGINFO if hasattr(signal, "SIGINFO") else signal.SIGUSR1
+    parser.add_argument(
+        "--signal",
+        type=to_signal,
+        help="The signal to intercept",
+        default=signal.SIGINFO if hasattr(signal, "SIGINFO") else signal.SIGUSR1,
     )
     ns = parser.parse_args(sys.argv[1:])
     sys.exit(sigsleep(ns.seconds, ns.signal))
