@@ -13,8 +13,6 @@ description = "Sleep that prints info upon receiving a specified signal"
 urls = {Homepage = "https://github.com/zwimer/sigsleep"}
 requires-python = ">= 3.8"
 dynamic = ["version"]
-dependencies = [
-]
 
 [project.readme]
 file = "README.md"
@@ -40,7 +38,7 @@ version = {attr = "sigsleep._version.__version__"}
 
 [tool.black]
 line-length = 120
-target-version = ["py310"]
+target-version = ["py38", "py39", "py310", "py311", "py312"]
 
 [tool.ruff]
 ignore=["E731"]
