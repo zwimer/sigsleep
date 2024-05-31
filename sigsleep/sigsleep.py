@@ -12,7 +12,8 @@ def _handler(total: float, start: int, *_) -> None:
     Bind total and start to make into a signal handler that prints elapsed time
     """
     remain: int = round(total - (time.time_ns() - start) / 1e9)
-    print(f"sleep: about {remain} seconds(s) left out of the original {total}")
+    t: str = str(int(total) if int(total) == total else total)
+    print(f"sleep: about {remain} seconds(s) left out of the original {t}")
 
 
 def sigsleep(seconds: float, sig: signal.Signals) -> int:
