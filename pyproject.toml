@@ -48,4 +48,5 @@ line-length = 120
 
 [tool.vulture]
 ignore_names = ["cli"]
+min_confidence = 70
 paths = ["sigsleep"]

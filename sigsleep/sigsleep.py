@@ -2,7 +2,6 @@ import argparse
 import signal
 import time
 import sys
-import os
 
 from ._version import __version__
 
@@ -35,21 +34,17 @@ def cli() -> None:
     CLI for sigsleep
     Default signal is SIGINFO if it exists, else SIGUSR1
     """
-    base: str = os.path.basename(sys.argv[0])
-    parser = argparse.ArgumentParser(prog=base)
-    parser.add_argument("--version", action="version", version=f"{base} {__version__}")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--version", action="version", version=f"{parser.prog} {__version__}")
     parser.add_argument("seconds", type=float, help="The number of seconds to sleep")
     to_signal = lambda d: signal.Signals(int(d))
     to_signal.__name__ = "signal"  # Cleaner output
     parser.add_argument(
+        "-s",
         "--signal",
         type=to_signal,
         help="The signal to intercept",
         default=signal.SIGINFO if hasattr(signal, "SIGINFO") else signal.SIGUSR1,
     )
-    ns = parser.parse_args(sys.argv[1:])
+    ns = parser.parse_args()
     sys.exit(sigsleep(ns.seconds, ns.signal))
-
-
-if __name__ == "__main__":
-    cli()
