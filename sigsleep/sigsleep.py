@@ -28,12 +28,13 @@ def sigsleep(seconds: int | float, sig: signal.Signals) -> int:
         raise ValueError("sleep length must be non-negative")
     if isnan(seconds):  # Just in case
         raise ValueError("sleep length may not be NaN")
-    start: int = time.time_ns()
-    signal.signal(sig, lambda *_: _handler(seconds, start))
+    # Put handler items in new item so edits don't change them later
+    handler_args = (seconds, time.time_ns())
+    signal.signal(sig, lambda *_: _handler(*handler_args))
     try:
         # Split sleep into multiple calls for large numbers, also
         # OS Schedulers can be wonky and have limits under the theoretical 2^64
-        max_sleep = 1  # 1E9
+        max_sleep = 1e9
         while seconds > 0:
             time.sleep(sec := min(seconds, max_sleep))
             seconds -= sec
