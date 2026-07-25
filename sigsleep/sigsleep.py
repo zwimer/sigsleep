@@ -1,3 +1,4 @@
+from __future__ import annotations
 from math import isnan
 import argparse
 import signal
