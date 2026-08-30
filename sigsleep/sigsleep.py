@@ -9,9 +9,7 @@ from ._version import __version__
 
 
 def _handler(total: int | float, start: int, *_) -> None:
-    """
-    Bind total and start to make into a signal handler that prints elapsed time
-    """
+    """Bind total and start to make into a signal handler that prints elapsed time"""
     if total != float("inf"):
         remain: int | str = round(max(0, round(total - (time.time_ns() - start) / 1e9)))
         t: int | float | str = int(total) if int(total) == total else total
@@ -21,8 +19,7 @@ def _handler(total: int | float, start: int, *_) -> None:
 
 
 def sigsleep(seconds: int | float, sig: signal.Signals) -> int:
-    """
-    Sleep, print elapsed time on intercepting signal
+    """Sleep, print elapsed time on intercepting signal
     :return Exit code
     """
     if seconds < 0:  # Just in case
@@ -45,9 +42,7 @@ def sigsleep(seconds: int | float, sig: signal.Signals) -> int:
 
 
 def length(num: str) -> int | float:  # Name it length so that argparse error messages are cleaner
-    """
-    Convert the NUMBER[SUFFIX] num into an int or float
-    """
+    """Convert the NUMBER[SUFFIX] num into an int or float"""
     if not (n := num.lower()):
         raise ValueError("Empty string is not a valid number")
     if (scale := {"m": 60, "h": 3600, "d": 3600 * 24}.get(n[-1], 1)) != 1 or n[-1] == "s":
@@ -56,8 +51,7 @@ def length(num: str) -> int | float:  # Name it length so that argparse error me
 
 
 def cli() -> None:
-    """
-    CLI for sigsleep
+    """CLI for sigsleep
     Default signal is SIGINFO if it exists, else SIGUSR1
     """
     parser = argparse.ArgumentParser()
