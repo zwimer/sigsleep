@@ -36,6 +36,9 @@ version = {attr = "sigsleep._version.__version__"}
 
 # Tools
 
+[tool.pylint.main]
+jobs = 0
+
 [tool.black]
 line-length = 120
 target-version = ["py38", "py39", "py310", "py311", "py312", "py313", "py314"]
